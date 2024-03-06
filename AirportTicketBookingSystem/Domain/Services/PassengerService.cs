@@ -12,7 +12,7 @@ namespace AirportTicketBookingSystem.Domain.Services
         private readonly static Dictionary<int, Passenger> passengers = new();
         internal static Dictionary<int, Passenger> GetPassengers()
         {
-            return passengers;
+            return passengers.ToDictionary();
         }
         internal static void AddPassenger(Passenger passenger)
         {

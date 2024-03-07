@@ -11,16 +11,16 @@ namespace AirportTicketBookingSystem.Domain.Models
     internal class Flight
     {
         private static int id = 1;
-        internal int Id { get; }
-        internal String DepartureCountry { get; }
-        internal String DestinationCountry { get; }
-        internal DateTime DepartureDate { get; }
-        internal String DepartureAirport { get; }
-        internal String ArrivalAirport { get; }
-        internal Dictionary<Seat, int> AvailableSeats { get; }
-        internal Dictionary<Seat, int> FlightPrice { get; }
-        internal Currency Currency { get; }
-        internal Dictionary<Seat, int> MaxSeats { get; } = [];
+        public int Id { get; }
+        public String DepartureCountry { get; }
+        public String DestinationCountry { get; }
+        public DateTime DepartureDate { get; }
+        public String DepartureAirport { get; }
+        public String ArrivalAirport { get; }
+        public Dictionary<Seat, int> AvailableSeats { get; }
+        public Dictionary<Seat, int> FlightPrice { get; }
+        public Currency Currency { get; }
+        public Dictionary<Seat, int> MaxSeats { get; } = [];
         
 
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport) { 
@@ -78,7 +78,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"Flight Information: \nFlight Number: {id}\nDepartureCountry: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
+            sb.Append($"Flight Information: \nFlight Number: {Id}\nDepartureCountry: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
             sb.Append($"Available Seats: ");
             foreach (var _seat in AvailableSeats)
             {

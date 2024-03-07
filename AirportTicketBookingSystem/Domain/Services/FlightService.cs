@@ -10,57 +10,42 @@ using System.Xml.Linq;
 
 namespace AirportTicketBookingSystem.Domain.Services
 {
-    static class TypeExtensions
-    {
-        public static bool IsAnonymousType(this Type type)
-        {
-            return type.IsClass
-                   && type.IsSealed
-                   && type.BaseType == typeof(object)
-                   && type.Name.StartsWith("<>f__AnonymousType", StringComparison.Ordinal)
-                   && type.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), false).Length > 0;
-        }
-    }
     internal class FlightService
     {
         private readonly static Dictionary<int, Flight> flights = [];
 
-        public static List<Flight> Search(Object? criteria) {
+        public static List<Flight> Search(Dictionary<String,Object>? criteria) {
            return flights.Select((flight) => flight.Value).Where((flight) => Match(flight, criteria)).ToList();
         }
         public static List<Flight> Search() {
             return Search(null);
         }
-        private static bool Match(Flight flight, Object criteria) {
-            var criteriaType = criteria.GetType();
+        private static bool Match(Flight flight, Dictionary<String, Object> criterias) {
             var flightType = flight.GetType();
-            //make sure that criteria class is anonymouse
-            if (criteria is null || !criteriaType.IsAnonymousType()) return true;
+            if (criterias is null) return true;
             //if no available seat don't include it
             int availableSeatsCount = flight.AvailableSeats.Select((f) => f.Value).Sum();
             if (availableSeatsCount == 0) return false;
             //custom criteria 'Class' to Show records based on seat type
-            if (criteriaType?.GetProperty("Class")?.GetValue(criteria) is not null)
+            if (criterias.ContainsKey("Class"))
             {
                 var availableSeatsProperty = flightType.GetProperty("AvailableSeats");
-                var seat = criteriaType.GetProperty("Class")!.GetValue(criteria);
+                var seat = criterias["Class"];
                 bool sucess = Enum.IsDefined(typeof(Seat), seat!);
                 if (sucess) { 
                     Dictionary<Seat, int> availableSeats = (Dictionary<Seat, int>)availableSeatsProperty!.GetValue(flight)!;
                     if (availableSeats[(Seat)seat!] == 0) return false;
                 }
             }
-            //Go over all properites in flight class and check equality 'only' with provided properites in anonymouse class
-            foreach (var property in flightType.GetProperties()) {
-                var criteriaProperty = criteriaType!.GetProperty(property.Name);
-                if (criteriaProperty is null) continue;
-                //make sure both criteria Property and flight Property have same type
-                if (property.PropertyType != criteriaProperty.PropertyType) continue;
-                if (property.PropertyType == typeof(String))
-                {   //check equlaity between strings and ignore case sensitive
-                    if (!String.Equals(criteriaProperty.GetValue(property.Name) as String, property.GetValue(property.Name) as String, StringComparison.OrdinalIgnoreCase)) return false;
+            //Go over all criterias and check equality with  properites in flight
+            foreach (var criteria in criterias) { 
+                 var property = flight.GetType().GetProperty(criteria.Key);
+                if (property is null) continue;
+                if (property.PropertyType != criteria.Value.GetType()) continue;
+                if (property.PropertyType == typeof(String)) {
+                    if (!String.Equals(criteria.Value as String, property.GetValue(flight) as String, StringComparison.OrdinalIgnoreCase)) return false;
                 }
-                else if (!Object.Equals(criteriaProperty.GetValue(criteria), property.GetValue(flight))) return false;
+                else if (!Object.Equals(criteria.Value, property.GetValue(flight))) return false;
             }
             return true;
         }

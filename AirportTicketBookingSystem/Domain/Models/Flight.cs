@@ -78,7 +78,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"Flight Information: \nFlight Number: {Id}\nDepartureCountry: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
+            sb.Append($"Flight Information: \nFlight Number: {Id}\nDeparture Country: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
             sb.Append($"Available Seats: ");
             foreach (var _seat in AvailableSeats)
             {

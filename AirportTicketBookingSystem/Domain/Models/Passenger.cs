@@ -11,11 +11,11 @@ namespace AirportTicketBookingSystem.Domain.Models
     {
         private static int id = 1;
         private String name = String.Empty;
-        public required int Id { get; init; }
-        public required string Name
+        internal int Id { get; }
+        public string Name
         {
             get => name;
-            init
+            set
             {
                 if (String.IsNullOrWhiteSpace(value))
                 {
@@ -24,13 +24,12 @@ namespace AirportTicketBookingSystem.Domain.Models
                 name = value;
             }
         }
-        [SetsRequiredMembers]
         public Passenger(string name)
         {
             Id = id++;
             Name = name;
         }
 
-        public override string ToString() => $"PassngerInfo:\nID: {Id}\nName: {Name}";
+        public override string ToString() => $"PassngerInfo:\nID: {id}\nName: {Name}";
     }
 }

@@ -10,84 +10,85 @@ namespace AirportTicketBookingSystem.Domain.Models
 {
     internal class Flight
     {
-        private static int Id = 1;
-        private int id;
-        private String departureCountry = String.Empty;
-        private String destinationCountry = String.Empty;
-        private DateTime departureDate;
-        private String departureAirport = String.Empty;
-        private String arrivalAirport = String.Empty;
-        private Dictionary<Seat, int> availableSeats;
-        private Dictionary<Seat, int> flightPrice;
-        private Currency currency;
-        private Dictionary<Seat, int> maxSeats = new();
+        private static int id = 1;
+        internal int Id { get; }
+        internal String DepartureCountry { get; }
+        internal String DestinationCountry { get; }
+        internal DateTime DepartureDate { get; }
+        internal String DepartureAirport { get; }
+        internal String ArrivalAirport { get; }
+        internal Dictionary<Seat, int> AvailableSeats { get; }
+        internal Dictionary<Seat, int> FlightPrice { get; }
+        internal Currency Currency { get; }
+        internal Dictionary<Seat, int> MaxSeats { get; } = [];
+        
 
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport) { 
-            id = Id++;
-            this.departureCountry= departureCountry;
-            this.departureAirport=departureAirport;
-            this.destinationCountry=destinationCountry;
-            this.departureDate=departureDate;
-            this.departureAirport = departureAirport;
-            this.arrivalAirport=arrivalAirport;
-            availableSeats = new() { { Seat.Economy, 50}, { Seat.Business, 10}, { Seat.FirstClass, 5} };
-            foreach (var _availableSeats in availableSeats) {
-                maxSeats.Add(_availableSeats.Key, _availableSeats.Value);
+            Id = id++;
+            DepartureCountry = departureCountry;
+            DepartureAirport = departureAirport;
+            DestinationCountry = destinationCountry;
+            DepartureDate = departureDate;
+            DepartureAirport = departureAirport;
+            ArrivalAirport = arrivalAirport;
+            AvailableSeats = new() { { Seat.Economy, 50}, { Seat.Business, 10}, { Seat.FirstClass, 5} };
+            foreach (var _availableSeats in AvailableSeats) {
+                MaxSeats.Add(_availableSeats.Key, _availableSeats.Value);
             }
-            flightPrice = new() { { Seat.Economy, 100 }, { Seat.Business, 700 }, { Seat.FirstClass, 900 } };
-            currency = Currency.USD;
+            FlightPrice = new() { { Seat.Economy, 100 }, { Seat.Business, 700 }, { Seat.FirstClass, 900 } };
+            Currency = Currency.USD;
         }
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, int> availableSeats, Dictionary<Seat, int> flightPrice, Currency currency)
         {
-            id = Id++;
-            this.departureCountry = departureCountry;
-            this.departureAirport = departureAirport;
-            this.destinationCountry = destinationCountry;
-            this.departureDate = departureDate;
-            this.departureAirport = departureAirport;
-            this.arrivalAirport = arrivalAirport;
-            this.availableSeats = availableSeats;
+            Id = id++;
+            DepartureCountry = departureCountry;
+            DepartureAirport = departureAirport;
+            DestinationCountry = destinationCountry;
+            DepartureDate = departureDate;
+            DepartureAirport = departureAirport;
+            ArrivalAirport = arrivalAirport;
+            AvailableSeats = availableSeats;
             foreach (var _availableSeats in availableSeats)
             {
-                maxSeats.Add(_availableSeats.Key, _availableSeats.Value);
+                MaxSeats.Add(_availableSeats.Key, _availableSeats.Value);
             }
-            this.flightPrice = flightPrice;
-            this.currency = currency;
+            FlightPrice = flightPrice;
+            Currency = currency;
         }
         internal bool AddPassengerToFlight(Seat seat) {
-            if (!availableSeats.TryGetValue(seat, out int availableSeatsLeft)) {
+            if (!AvailableSeats.TryGetValue(seat, out int availableSeatsLeft)) {
                 return false;
             }
             if (availableSeatsLeft > 0) {
-                availableSeats[seat] -= 1;
+                AvailableSeats[seat] -= 1;
                 return true;
             }
             return false;
         }        
-        internal bool removePassengerFromFlight(Seat seat) {
-            if (!availableSeats.TryGetValue(seat, out int availableSeatsLeft))
+        internal bool RemovePassengerFromFlight(Seat seat) {
+            if (!AvailableSeats.TryGetValue(seat, out int availableSeatsLeft))
             {
                 return false;
             }
-            if (availableSeatsLeft == maxSeats[seat]) { return false; }
-            availableSeats[seat] += 1;
+            if (availableSeatsLeft == MaxSeats[seat]) { return false; }
+            AvailableSeats[seat] += 1;
             return true;
         }
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"Flight Information: \nFlight Number: {id}\nDepartureCountry: {departureCountry}\nDestination Country: {destinationCountry}\nDeparture Date: {departureDate}\nDeparture Airport: {departureAirport}\nArrival Airport: {arrivalAirport}\n");
+            StringBuilder sb = new();
+            sb.Append($"Flight Information: \nFlight Number: {id}\nDepartureCountry: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
             sb.Append($"Available Seats: ");
-            foreach (var _seat in availableSeats)
+            foreach (var _seat in AvailableSeats)
             {
                 sb.Append($" {_seat.Key} Seat: {_seat.Value}");
             }
             sb.Append($"\nPrice Per Seat: ");
-            foreach (var _price in flightPrice) {
+            foreach (var _price in FlightPrice) {
                 sb.Append($" {_price.Key} Seat: {_price.Value} ");
             }
-            sb.Append($"\nCurrency: {currency}");
+            sb.Append($"\nCurrency: {Currency}");
             return sb.ToString();
         }
     }

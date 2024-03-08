@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Models
 {
-    internal  struct FlightSeatsData(int availableSeats, int seatPrice, int maxSeats)
+    internal  class FlightSeatsData(int availableSeats, int seatPrice, int maxSeats)
     {
-        public  int AvailableSeats { get => availableSeats; set=> availableSeats = value; }
-        public readonly int SeatPrice { get => seatPrice;}
-        public readonly int MaxSeats { get => maxSeats; }
+        public  int AvailableSeats { get => availableSeats; set{ availableSeats = value; } }
+        public  int SeatPrice { get => seatPrice;}
+        public  int MaxSeats { get => maxSeats; }
     };
     internal class Flight
     {

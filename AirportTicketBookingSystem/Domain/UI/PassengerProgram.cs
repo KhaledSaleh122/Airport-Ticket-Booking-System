@@ -196,5 +196,36 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
         }
+        internal static void ViewPersonalBooking(Passenger passenger) {
+            Console.Clear();
+            Console.WriteLine("###Current Books###");
+            foreach (var book in BookService.getBooks(passenger)) {
+                Console.WriteLine($"{book}\n\n////////////////////////////////\n\n");
+            }
+            Console.WriteLine("\n\nPress enter to back");
+            Console.ReadLine();
+        }
+
+        internal static void CancelBooking(Passenger passenger) {
+            Console.Clear();
+            Console.WriteLine("###Cancel Books###");
+            String userInput;
+            Book? book = null;
+            do {
+                Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");
+                userInput = Console.ReadLine();
+                if (userInput == "~") return;
+                bool sucess = int.TryParse(userInput, out int id);
+                if (!sucess) { Console.WriteLine("invalid input"); continue; }
+                book = BookService.getBook(passenger, id);
+                if (book == null) { Console.WriteLine("Couldn't find the Book");continue; }
+                break;
+            }while (true);
+            BookService.removeBook(book);
+            Console.WriteLine("\nYour flight reservation has been Canceled\n");
+            Console.WriteLine(book);
+            Console.WriteLine("\nPress enter to back");
+            Console.ReadLine();
+        }
     }
 }

@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Models
 {
+    internal  struct FlightSeatsData(int availableSeats, int seatPrice, int maxSeats)
+    {
+        public  int AvailableSeats { get => availableSeats; set=> availableSeats = value; }
+        public readonly int SeatPrice { get => seatPrice;}
+        public readonly int MaxSeats { get => maxSeats; }
+    };
     internal class Flight
     {
         private static int id = 1;
@@ -17,28 +23,13 @@ namespace AirportTicketBookingSystem.Domain.Models
         public DateTime DepartureDate { get; }
         public String DepartureAirport { get; }
         public String ArrivalAirport { get; }
-        public Dictionary<Seat, int> AvailableSeats { get; }
-        public Dictionary<Seat, int> FlightPrice { get; }
+        public Dictionary<Seat, FlightSeatsData> ClassData { get; }
+        // public Dictionary<Seat, int> FlightPrice { get; }
         public Currency Currency { get; }
-        public Dictionary<Seat, int> MaxSeats { get; } = [];
-        
+        //public Dictionary<Seat, int> MaxSeats { get; } = [];
 
-        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport) { 
-            Id = id++;
-            DepartureCountry = departureCountry;
-            DepartureAirport = departureAirport;
-            DestinationCountry = destinationCountry;
-            DepartureDate = departureDate;
-            DepartureAirport = departureAirport;
-            ArrivalAirport = arrivalAirport;
-            AvailableSeats = new() { { Seat.Economy, 50}, { Seat.Business, 10}, { Seat.FirstClass, 5} };
-            foreach (var _availableSeats in AvailableSeats) {
-                MaxSeats.Add(_availableSeats.Key, _availableSeats.Value);
-            }
-            FlightPrice = new() { { Seat.Economy, 100 }, { Seat.Business, 700 }, { Seat.FirstClass, 900 } };
-            Currency = Currency.USD;
-        }
-        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, int> availableSeats, Dictionary<Seat, int> flightPrice, Currency currency)
+
+        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport)
         {
             Id = id++;
             DepartureCountry = departureCountry;
@@ -47,31 +38,35 @@ namespace AirportTicketBookingSystem.Domain.Models
             DepartureDate = departureDate;
             DepartureAirport = departureAirport;
             ArrivalAirport = arrivalAirport;
-            AvailableSeats = availableSeats;
-            foreach (var _availableSeats in availableSeats)
-            {
-                MaxSeats.Add(_availableSeats.Key, _availableSeats.Value);
-            }
-            FlightPrice = flightPrice;
+            ClassData = new() { { Seat.Economy, new FlightSeatsData(50, 200, 50) }, { Seat.Business, new FlightSeatsData(20, 700, 20) }, { Seat.FirstClass, new FlightSeatsData(10, 2000, 10) } };
+            Currency = Currency.USD;
+        }
+        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, FlightSeatsData> ClassData, Currency currency)
+        {
+            Id = id++;
+            DepartureCountry = departureCountry;
+            DepartureAirport = departureAirport;
+            DestinationCountry = destinationCountry;
+            DepartureDate = departureDate;
+            DepartureAirport = departureAirport;
+            ArrivalAirport = arrivalAirport;
             Currency = currency;
         }
-        internal bool AddPassengerToFlight(Seat seat) {
-            if (!AvailableSeats.TryGetValue(seat, out int availableSeatsLeft)) {
-                return false;
-            }
-            if (availableSeatsLeft > 0) {
-                AvailableSeats[seat] -= 1;
+        internal bool AddPassengerToFlight(Seat seat)
+        {
+            if(!ClassData.TryGetValue(seat,out FlightSeatsData value)) return false;
+            if (value.AvailableSeats > 0)
+            {
+                value.AvailableSeats -= 1;
                 return true;
             }
             return false;
-        }        
-        internal bool RemovePassengerFromFlight(Seat seat) {
-            if (!AvailableSeats.TryGetValue(seat, out int availableSeatsLeft))
-            {
-                return false;
-            }
-            if (availableSeatsLeft == MaxSeats[seat]) { return false; }
-            AvailableSeats[seat] += 1;
+        }
+        internal bool RemovePassengerFromFlight(Seat seat)
+        {
+            if (!ClassData.TryGetValue(seat, out FlightSeatsData value)) return false;
+            if (value.AvailableSeats == value.MaxSeats) { return false; }
+            value.AvailableSeats += 1;
             return true;
         }
 
@@ -79,16 +74,12 @@ namespace AirportTicketBookingSystem.Domain.Models
         {
             StringBuilder sb = new();
             sb.Append($"Flight Information: \nFlight Number: {Id}\nDeparture Country: {DepartureCountry}\nDestination Country: {DestinationCountry}\nDeparture Date: {DepartureDate}\nDeparture Airport: {DepartureAirport}\nArrival Airport: {ArrivalAirport}\n");
-            sb.Append($"Available Seats: ");
-            foreach (var _seat in AvailableSeats)
+            sb.Append($"Seats Data: \n");
+            foreach (var _seat in ClassData)
             {
-                sb.Append($" {_seat.Key} Seat: {_seat.Value}");
+                sb.Append($"Class '{_seat.Key}' | Available Seats '{_seat.Value.AvailableSeats}' | Price Per Seat '{_seat.Value.SeatPrice}'\n");
             }
-            sb.Append($"\nPrice Per Seat: ");
-            foreach (var _price in FlightPrice) {
-                sb.Append($" {_price.Key} Seat: {_price.Value} ");
-            }
-            sb.Append($"\nCurrency: {Currency}");
+            sb.Append($"Currency: {Currency}");
             return sb.ToString();
         }
     }

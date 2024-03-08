@@ -162,18 +162,29 @@ namespace AirportTicketBookingSystem.Domain.UI
                 if (targetFlight.Count == 0) { Console.WriteLine("Selected Flgiht Not available");continue; }
                 flight = targetFlight[0];
             } while (flight is null);
+            Console.WriteLine();
+            Console.WriteLine(flight);
             Seat seat;
             do {
                 Console.WriteLine("\nChoose Seat Class: ");
                 Console.WriteLine("Enter 1: Economy seats");
                 Console.WriteLine("Enter 2: Business seats");
                 Console.WriteLine("Enter 3: FirstClass seats");
+                Console.WriteLine("Enter 4: To cancel operation");
                 String selected = Console.ReadLine();
                 switch (selected)
                 {
-                    case "1": seat = Seat.Economy; break;
-                    case "2": seat = Seat.Business; break;
-                    case "3": seat = Seat.FirstClass; break;
+                    case "1":
+                        if (!isThereAvailableSeat(flight, Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
+                        seat = Seat.Economy; 
+                        break;
+                    case "2":
+                        if (!isThereAvailableSeat(flight, Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
+                        seat = Seat.Business; break;
+                    case "3":
+                        if (!isThereAvailableSeat(flight, Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
+                        seat = Seat.FirstClass; break;
+                    case "4": return;
                     default: Console.WriteLine("invalid input"); continue;
                 }
                 break;
@@ -185,6 +196,9 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
 
+        }
+        public static bool isThereAvailableSeat(Flight flight,Seat seat) {
+            return flight.ClassData[seat].AvailableSeats > 0;
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.UI
 {
-    internal class PassengerProgram
+    internal static class PassengerProgram
     {
         internal static void AddPassenger()
         {
@@ -147,6 +147,44 @@ namespace AirportTicketBookingSystem.Domain.UI
                 Console.WriteLine(flight);
                 Console.WriteLine();
             }
+        }
+        internal static void BookFlight(Passenger passenger) {
+            String userInput;
+            Console.WriteLine("### Book a Flight ###");
+            Flight? flight = null;
+            do {
+                Console.WriteLine("\nEnter Id of the flight you want to book: [Enter ~ to cancel operation]");
+                userInput = Console.ReadLine();
+                if (userInput == "~") return;
+                bool sucess = int.TryParse(userInput, out int id);
+                if (!sucess) { Console.WriteLine("invalid input"); continue; }
+                List <Flight> targetFlight= FlightService.Search(new Dictionary<string, object> { { "Id", id } });
+                if (targetFlight.Count == 0) { Console.WriteLine("Selected Flgiht Not available");continue; }
+                flight = targetFlight[0];
+            } while (flight is null);
+            Seat seat;
+            do {
+                Console.WriteLine("\nChoose Seat Class: ");
+                Console.WriteLine("Enter 1: Economy seats");
+                Console.WriteLine("Enter 2: Business seats");
+                Console.WriteLine("Enter 3: FirstClass seats");
+                String selected = Console.ReadLine();
+                switch (selected)
+                {
+                    case "1": seat = Seat.Economy; break;
+                    case "2": seat = Seat.Business; break;
+                    case "3": seat = Seat.FirstClass; break;
+                    default: Console.WriteLine("invalid input"); continue;
+                }
+                break;
+            }while (true);
+            Book book = new(flight, passenger,seat);
+            BookService.addBook(book);
+            Console.WriteLine("\nYour flight reservation has been confirmed\n");
+            Console.WriteLine(flight);
+            Console.WriteLine("\nPress enter to back");
+            Console.ReadLine();
+
         }
     }
 }

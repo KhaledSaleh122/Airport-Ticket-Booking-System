@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Services
 {
-    internal class PassengerService
+    internal static class PassengerService
     {
         private readonly static Dictionary<int, Passenger> passengers = new();
         internal static Dictionary<int, Passenger> GetPassengers()

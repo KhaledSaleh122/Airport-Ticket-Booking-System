@@ -20,6 +20,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             String userInput = String.Empty;
             String name = String.Empty;
             Console.Clear();
+            Console.WriteLine("##Create Passenger Account##");
             do
             {
                 Console.WriteLine("Passenger Name: [Enter ~ to cancel operation]");
@@ -45,6 +46,51 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.WriteLine(passenger);
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
+        }
+        internal static void ShowPassengerMenu(Passenger passenger) {
+            String userInput;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("####################");
+                Console.WriteLine("## Passenger Menu ##");
+                Console.WriteLine("####################");
+                Console.WriteLine();
+                Console.WriteLine("## Your Selection ##");
+                Console.WriteLine("Enter 1: Search for Available Flights");
+                Console.WriteLine("Enter 2: Book a Flight");
+                Console.WriteLine("Enter 3: Cancel a booking");
+                Console.WriteLine("Enter 4: Modify a booking");
+                Console.WriteLine("Enter 5: View personal bookings");
+                Console.WriteLine("Enter 0: To Exist");
+                Console.WriteLine();
+                userInput = Console.ReadLine();
+                switch (userInput) {
+                    case "1":
+                        SearchForAvailableFlights();
+                        break;
+                    case "2":
+                        BookFlight(passenger);
+                        break;
+                    case "3":
+                        CancelBooking(passenger);
+                        break;
+                    case "4":
+                        ModifyBooking(passenger);
+                        break;
+                    case "5":
+                        ViewPersonalBooking(passenger);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("invalid input"); 
+                        Console.WriteLine("\nPress enter to back"); 
+                        Console.ReadLine(); 
+                        break;
+                }
+            } while (true);
+
         }
         internal static void SearchForAvailableFlights()
         {
@@ -85,32 +131,32 @@ namespace AirportTicketBookingSystem.Domain.UI
                     case "2":
                         Console.WriteLine("Enter the Departure Country: ");
                         String _departureCountry = Console.ReadLine();
-                        if (String.IsNullOrWhiteSpace(_departureCountry)) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        if (String.IsNullOrWhiteSpace(_departureCountry)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back");Console.ReadLine(); break; }
                         props["DepartureCountry"] = _departureCountry;
                         break;                   
                     case "3":
                         Console.WriteLine("Enter the Destination Country: ");
                         String _destinationCountry = Console.ReadLine();
-                        if (String.IsNullOrWhiteSpace(_destinationCountry)) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        if (String.IsNullOrWhiteSpace(_destinationCountry)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DestinationCountry"] = _destinationCountry;
                         break;                    
                     case "4":
                         Console.WriteLine("Enter the Departure Date: ");
                         String _departureDate = Console.ReadLine();
                         bool _success = DateTime.TryParse(_departureDate, out DateTime departureDate);
-                        if (!_success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        if (!_success) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DepartureDate"] = departureDate;
                         break;
                     case "5":
                         Console.WriteLine("Enter the Departure Airport: ");
                         String _departureAirport = Console.ReadLine();
-                        if (String.IsNullOrWhiteSpace(_departureAirport)) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        if (String.IsNullOrWhiteSpace(_departureAirport)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DepartureAirport"] = _departureAirport;
                         break;                    
                     case "6":
                         Console.WriteLine("Enter the Arrival Airport: ");
                         String _arrivalAirport = Console.ReadLine();
-                        if (String.IsNullOrWhiteSpace(_arrivalAirport)) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        if (String.IsNullOrWhiteSpace(_arrivalAirport)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["ArrivalAirport"] = _arrivalAirport;
                         break;
                     case "7":
@@ -142,11 +188,16 @@ namespace AirportTicketBookingSystem.Domain.UI
                 }
             } while (userInput != "0");
             var flights = FlightService.Search(props);
+            if (flights.Count == 0) {
+                Console.WriteLine("No data Yet!");
+            }
             foreach (var flight in flights)
             {
                 Console.WriteLine(flight);
                 Console.WriteLine();
             }
+            Console.WriteLine("\nPress enter to back");
+            Console.ReadLine();
         }
         internal static void BookFlight(Passenger passenger) {
             String userInput;
@@ -199,7 +250,11 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void ViewPersonalBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Current Books###");
-            foreach (var book in BookService.getBooks(passenger)) {
+            List<Book> books = BookService.getBooks(passenger);
+            if (books.Count == 0) {
+                Console.WriteLine("\nNo Data yet!");
+            }
+            foreach (var book in books) {
                 Console.WriteLine($"{book}\n\n////////////////////////////////\n\n");
             }
             Console.WriteLine("\n\nPress enter to back");
@@ -208,7 +263,7 @@ namespace AirportTicketBookingSystem.Domain.UI
 
         internal static void CancelBooking(Passenger passenger) {
             Console.Clear();
-            Console.WriteLine("###Cancel Books###");
+            Console.WriteLine("###Cancel Book###");
             String userInput;
             Book? book = null;
             do {
@@ -223,6 +278,56 @@ namespace AirportTicketBookingSystem.Domain.UI
             }while (true);
             BookService.removeBook(book);
             Console.WriteLine("\nYour flight reservation has been Canceled\n");
+            Console.WriteLine(book);
+            Console.WriteLine("\nPress enter to back");
+            Console.ReadLine();
+        }
+
+        internal static void ModifyBooking(Passenger passenger) {
+            Console.Clear();
+            Console.WriteLine("###Modify Book###");
+            String userInput;
+            Book? book = null;
+            do
+            {
+                Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");
+                userInput = Console.ReadLine();
+                if (userInput == "~") return;
+                bool sucess = int.TryParse(userInput, out int id);
+                if (!sucess) { Console.WriteLine("invalid input"); continue; }
+                book = BookService.getBook(passenger, id);
+                if (book == null) { Console.WriteLine("Couldn't find the Book"); continue; }
+                break;
+            } while (true);
+            do
+            {
+                Console.WriteLine("\nChoose Seat Class: ");
+                Console.WriteLine("Enter 1: Economy seats");
+                Console.WriteLine("Enter 2: Business seats");
+                Console.WriteLine("Enter 3: FirstClass seats");
+                Console.WriteLine("Enter 4: To cancel operation");
+                String selected = Console.ReadLine();
+                switch (selected)
+                {
+                    case "1":
+                        if (book.Class == Seat.Economy) { break; }
+                        if (!book.BookedFlight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class"); continue; }
+                        book.Class = Seat.Economy;
+                        break;
+                    case "2":
+                        if (book.Class == Seat.Business) { break; }
+                        if (!book.BookedFlight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
+                        book.Class = Seat.Business; break;
+                    case "3":
+                        if (book.Class == Seat.FirstClass) { break; }
+                        if (!book.BookedFlight.isThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
+                        book.Class = Seat.FirstClass; break;
+                    case "4": return;
+                    default: Console.WriteLine("invalid input"); continue;
+                }
+                break;
+            } while (true);
+            Console.WriteLine("\nYour modified the book succesfully\n");
             Console.WriteLine(book);
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();

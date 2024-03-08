@@ -55,12 +55,15 @@ namespace AirportTicketBookingSystem.Domain.Models
         internal bool AddPassengerToFlight(Seat seat)
         {
             if(!ClassData.TryGetValue(seat,out FlightSeatsData value)) return false;
-            if (value.AvailableSeats > 0)
+            if (isThereAvailableSeat(seat))
             {
                 value.AvailableSeats -= 1;
                 return true;
             }
             return false;
+        }
+        internal bool isThereAvailableSeat(Seat seat) { 
+            return ClassData[seat].AvailableSeats > 0;
         }
         internal bool RemovePassengerFromFlight(Seat seat)
         {

@@ -126,6 +126,13 @@ namespace AirportTicketBookingSystem.Domain.UI
                             default: Console.WriteLine("invalid input"); Console.ReadLine(); break;
                         }
                         break;
+                    case "8":
+                        Console.WriteLine("Enter the price: ");
+                        String _price = Console.ReadLine();
+                        bool __success = int.TryParse(_price, out int price);
+                        if (!__success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                        props["Price"] = price;
+                        break;
                     case "0":
                         break;
                     default:

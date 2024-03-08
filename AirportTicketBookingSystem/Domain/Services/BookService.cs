@@ -20,8 +20,11 @@ namespace AirportTicketBookingSystem.Domain.Services
             books.Remove(book.Id);
         }
 
-        public static Dictionary<int, Book> getBooks() { 
-            return books.ToDictionary();
+        public static List<Book> getBooks() { 
+            return books.Values.ToList();
+        }         
+        public static List<Book> getBooks(Passenger passenger) {
+            return books.Select(book=> book.Value).Where(book => book.Passenger == passenger).ToList();
         } 
     }
 }

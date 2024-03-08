@@ -25,6 +25,10 @@ namespace AirportTicketBookingSystem.Domain.Services
         }         
         public static List<Book> getBooks(Passenger passenger) {
             return books.Select(book=> book.Value).Where(book => book.Passenger == passenger).ToList();
-        } 
+        }
+        public static Book? getBook(Passenger passenger,int id)
+        {
+            return books.FirstOrDefault(book => book.Value.Passenger == passenger && book.Key == id).Value;
+        }
     }
 }

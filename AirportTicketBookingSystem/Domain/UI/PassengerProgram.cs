@@ -192,7 +192,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Book book = new(flight, passenger,seat);
             BookService.addBook(book);
             Console.WriteLine("\nYour flight reservation has been confirmed\n");
-            Console.WriteLine(flight);
+            Console.WriteLine(book);
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
         }

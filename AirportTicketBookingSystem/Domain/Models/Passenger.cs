@@ -30,6 +30,6 @@ namespace AirportTicketBookingSystem.Domain.Models
             Name = name;
         }
 
-        public override string ToString() => $"PassngerInfo:\nID: {id}\nName: {Name}";
+        public override string ToString() => $"PassngerInfo:\n\nID: {id}\nName: {Name}";
     }
 }

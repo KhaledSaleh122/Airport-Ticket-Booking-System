@@ -23,6 +23,16 @@ namespace AirportTicketBookingSystem.Domain.Models
             Passenger = passenger;
             Class = SelectedClass;
         }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Book information:\n\n");
+            sb.Append($"Id: {Id}\t||\tFlight Id: {BookedFlight.Id}\t||\tSeat Class: {Class}\n\n");
+            sb.Append(BookedFlight);
+            sb.Append("\n\n");
+            sb.Append(Passenger);
+            return sb.ToString();
+        }
 
     }
 }

@@ -18,5 +18,9 @@ namespace AirportTicketBookingSystem.Domain.Services
         {
             passengers.Add(passenger.Id, passenger);
         }
+        internal static Passenger? GetPassenger(int id)
+        {
+            return passengers.FirstOrDefault(passenger => passenger.Key == id).Value;
+        }
     }
 }

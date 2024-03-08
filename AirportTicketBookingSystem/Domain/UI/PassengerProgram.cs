@@ -15,6 +15,23 @@ namespace AirportTicketBookingSystem.Domain.UI
 {
     internal static class PassengerProgram
     {
+        internal static void UseCreatedPassengerAccount() {
+            String userInput = String.Empty;
+            Console.Clear();
+            Console.WriteLine("## Signin Passenger Account ##");
+            Passenger? passenger = null;
+            do
+            {
+                Console.WriteLine("\n\nEnter the passenger account Id: [Enter ~ to cancel operation]");
+                userInput = Console.ReadLine();
+                if (userInput == "~") return;
+                bool success = int.TryParse(userInput, out int id);
+                if (!success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                passenger = PassengerService.GetPassenger(id);
+                if (passenger is null) { Console.WriteLine("Couldn't find the passenger account"); continue; }
+            }while (passenger is null);
+            ShowPassengerMenu(passenger);
+        }
         internal static void AddPassenger()
         {
             String userInput = String.Empty;
@@ -48,13 +65,15 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.ReadLine();
         }
         internal static void ShowPassengerMenu(Passenger passenger) {
-            String userInput;
+            String userInput = String.Empty;
             do
             {
                 Console.Clear();
                 Console.WriteLine("####################");
                 Console.WriteLine("## Passenger Menu ##");
                 Console.WriteLine("####################");
+                Console.WriteLine();
+                Console.WriteLine(passenger);
                 Console.WriteLine();
                 Console.WriteLine("## Your Selection ##");
                 Console.WriteLine("Enter 1: Search for Available Flights");
@@ -200,7 +219,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.ReadLine();
         }
         internal static void BookFlight(Passenger passenger) {
-            String userInput;
+            String userInput = String.Empty;
             Console.WriteLine("### Book a Flight ###");
             Flight? flight = null;
             do {
@@ -264,7 +283,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void CancelBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Cancel Book###");
-            String userInput;
+            String userInput = String.Empty;
             Book? book = null;
             do {
                 Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");
@@ -286,7 +305,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void ModifyBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Modify Book###");
-            String userInput;
+            String userInput = String.Empty;
             Book? book = null;
             do
             {

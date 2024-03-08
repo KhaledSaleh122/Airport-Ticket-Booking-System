@@ -21,21 +21,28 @@ namespace AirportTicketBookingSystem.Domain.Services
             return Search(null);
         }
         private static bool Match(Flight flight, Dictionary<String, Object> criterias) {
-            var flightType = flight.GetType();
             if (criterias is null) return true;
             //if no available seat don't include it
-            int availableSeatsCount = flight.AvailableSeats.Select((f) => f.Value).Sum();
-            if (availableSeatsCount == 0) return false;
-            //custom criteria 'Class' to Show records based on seat type
-            if (criterias.ContainsKey("Class"))
+            if (flight.AvailableSeats.Values.All(numberOfSeats=> numberOfSeats == 0)) return false;
+            //custom criteria 'Class' & 'Price' to Show records based on seat type and price
+            if (criterias.TryGetValue("Class",out object? classValue))
             {
-                var availableSeatsProperty = flightType.GetProperty("AvailableSeats");
-                var seat = criterias["Class"];
+                var availableSeats = flight.AvailableSeats;
+                var seat = classValue;
                 bool sucess = Enum.IsDefined(typeof(Seat), seat!);
-                if (sucess) { 
-                    Dictionary<Seat, int> availableSeats = (Dictionary<Seat, int>)availableSeatsProperty!.GetValue(flight)!;
+                if (sucess)
+                {
                     if (availableSeats[(Seat)seat!] == 0) return false;
+                    if (criterias.TryGetValue("Price", out object? priceValue)) {
+                        bool _sucess = int.TryParse((string?)priceValue, out int price);
+                        if (_sucess && flight.FlightPrice[(Seat)seat] > price) return false;
+                    }
                 }
+            }
+            else if (criterias.TryGetValue("Price",out object? priceValue)) {
+                var prices = flight.FlightPrice.Values;
+                bool _sucess = int.TryParse((string?)priceValue, out int price);
+                if(_sucess && prices.All(seatPrice => seatPrice > price)) return false;
             }
             //Go over all criterias and check equality with  properites in flight
             foreach (var criteria in criterias) { 

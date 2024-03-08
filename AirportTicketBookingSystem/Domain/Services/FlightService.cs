@@ -10,15 +10,15 @@ using System.Xml.Linq;
 
 namespace AirportTicketBookingSystem.Domain.Services
 {
-    internal class FlightService
+    internal static class FlightService
     {
         private readonly static Dictionary<int, Flight> flights = [];
 
-        public static List<Flight> Search(Dictionary<String,Object>? criteria) {
-           return flights.Select((flight) => flight.Value).Where((flight) => Match(flight, criteria)).ToList();
+        public static List<Flight> Search(Dictionary<String,Object>? criteria,bool igonreDateVlidation = false) {
+           return flights.Select((flight) => flight.Value).Where((flight) => ((!igonreDateVlidation && flight.DepartureDate >= DateTime.Now) || igonreDateVlidation) && Match(flight, criteria)).ToList();
         }
-        public static List<Flight> Search() {
-            return Search(null);
+        public static List<Flight> Search(bool igonreDateVlidation = false) {
+            return Search(null, igonreDateVlidation);
         }
         private static bool Match(Flight flight, Dictionary<String, Object> criterias) {
             if (criterias is null) return true;

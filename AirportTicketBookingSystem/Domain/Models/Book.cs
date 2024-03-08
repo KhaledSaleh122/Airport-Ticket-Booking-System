@@ -14,7 +14,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public int Id { get; }
         public Flight BookedFlight { get; }
         public Passenger Passenger { get;}
-        public Seat Class { get; }
+        public Seat Class { get; set; }
 
 
         public Book(Flight flight, Passenger passenger,Seat SelectedClass) {

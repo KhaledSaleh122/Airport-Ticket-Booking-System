@@ -175,14 +175,14 @@ namespace AirportTicketBookingSystem.Domain.UI
                 switch (selected)
                 {
                     case "1":
-                        if (!isThereAvailableSeat(flight, Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
+                        if (!flight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
                         seat = Seat.Economy; 
                         break;
                     case "2":
-                        if (!isThereAvailableSeat(flight, Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!flight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
                         seat = Seat.Business; break;
                     case "3":
-                        if (!isThereAvailableSeat(flight, Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!flight.isThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
                         seat = Seat.FirstClass; break;
                     case "4": return;
                     default: Console.WriteLine("invalid input"); continue;
@@ -195,10 +195,6 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.WriteLine(flight);
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
-
-        }
-        public static bool isThereAvailableSeat(Flight flight,Seat seat) {
-            return flight.ClassData[seat].AvailableSeats > 0;
         }
     }
 }

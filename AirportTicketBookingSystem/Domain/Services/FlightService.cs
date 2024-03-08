@@ -34,15 +34,13 @@ namespace AirportTicketBookingSystem.Domain.Services
                 {
                     if (availableSeats[(Seat)seat!] == 0) return false;
                     if (criterias.TryGetValue("Price", out object? priceValue)) {
-                        bool _sucess = int.TryParse((string?)priceValue, out int price);
-                        if (_sucess && flight.FlightPrice[(Seat)seat] > price) return false;
+                        if (priceValue is not null && priceValue.GetType() == typeof(int) && flight.FlightPrice[(Seat)seat] > (int)priceValue) return false;
                     }
                 }
             }
             else if (criterias.TryGetValue("Price",out object? priceValue)) {
                 var prices = flight.FlightPrice.Values;
-                bool _sucess = int.TryParse((string?)priceValue, out int price);
-                if(_sucess && prices.All(seatPrice => seatPrice > price)) return false;
+                if (priceValue is not null && priceValue.GetType() == typeof(int) && prices.All(seatPrice => seatPrice > (int)priceValue)) return false;
             }
             //Go over all criterias and check equality with  properites in flight
             foreach (var criteria in criterias) { 

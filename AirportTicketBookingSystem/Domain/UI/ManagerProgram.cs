@@ -11,54 +11,6 @@ namespace AirportTicketBookingSystem.Domain.UI
 {
     internal static class ManagerProgram
     {
-        internal static void ShowManagerMenu()
-        {
-            String? userInput = String.Empty;
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("####################");
-                Console.WriteLine("## Manager Menu ##");
-                Console.WriteLine("####################");
-                Console.WriteLine();
-                Console.WriteLine("## Your Selection ##");
-                Console.WriteLine("Enter 1: Filter Bookings");
-                Console.WriteLine("Enter 2: Book a Flight");
-                Console.WriteLine("Enter 3: Cancel a booking");
-                Console.WriteLine("Enter 4: Modify a booking");
-                Console.WriteLine("Enter 5: View personal bookings");
-                Console.WriteLine("Enter 0: To Exist");
-                Console.WriteLine();
-                userInput = Console.ReadLine();
-                switch (userInput)
-                {
-                    case "1":
-                        FilterBookingsMenu();
-                        break;
-                    case "2":
-                        //BookFlight(passenger);
-                        break;
-                    case "3":
-                        //CancelBooking(passenger);
-                        break;
-                    case "4":
-                        //ModifyBooking(passenger);
-                        break;
-                    case "5":
-                        //ViewPersonalBooking(passenger);
-                        break;
-                    case "0":
-                        return;
-                    default:
-                        Console.WriteLine("invalid input");
-                        Console.WriteLine("\nPress enter to back");
-                        Console.ReadLine();
-                        break;
-                }
-            } while (true);
-
-        }
-
         internal static void FilterBookingsMenu() {
             String? userInput = String.Empty;
             Dictionary<String, Object> props = new();
@@ -182,6 +134,26 @@ namespace AirportTicketBookingSystem.Domain.UI
                 Console.WriteLine();
             }
             Console.WriteLine("\nPress enter to back");
+            Console.ReadLine();
+        }
+        internal static void loadFlightFromCSV() {
+            Console.Clear();
+            Console.WriteLine("### Loading Flights From CSV File ###");
+            Console.WriteLine();
+            var errors = Manager.LoadFlightsDataFromCSV();
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error);
+            }
+            if (errors.Count == 0)
+            {
+                Console.WriteLine("\n\nAll flights from csv loaded successfully!");
+            }
+            else {
+                Console.WriteLine($"\n\nThere is {errors.Count} during loading csv, Fix them and load it again!");
+            }
+
+            Console.WriteLine("\nPress enter to go back");
             Console.ReadLine();
         }
     }

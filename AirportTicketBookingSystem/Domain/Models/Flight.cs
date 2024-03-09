@@ -24,7 +24,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public String DepartureAirport { get; }
         public String ArrivalAirport { get; }
         public Dictionary<Seat, FlightSeatsData> ClassData { get; }
-        public Currency Currency { get; }
+        public Currency Currency { get; } = Currency.USD
 
 
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport)
@@ -37,19 +37,11 @@ namespace AirportTicketBookingSystem.Domain.Models
             DepartureAirport = departureAirport;
             ArrivalAirport = arrivalAirport;
             ClassData = new() { { Seat.Economy, new FlightSeatsData(50, 200, 50) }, { Seat.Business, new FlightSeatsData(20, 700, 20) }, { Seat.FirstClass, new FlightSeatsData(10, 2000, 10) } };
-            Currency = Currency.USD;
         }
         
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Currency currency, Dictionary<Seat, FlightSeatsData> classData) :
             this(departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport)
         {
-            Id = id++;
-            DepartureCountry = departureCountry;
-            DepartureAirport = departureAirport;
-            DestinationCountry = destinationCountry;
-            DepartureDate = departureDate;
-            DepartureAirport = departureAirport;
-            ArrivalAirport = arrivalAirport;
             Currency = currency;
             ClassData = classData;
         }

@@ -15,13 +15,15 @@ namespace AirportTicketBookingSystem.Domain.Models
         public Flight BookedFlight { get; }
         public Passenger Passenger { get;}
         public Seat Class { get; set; }
+        public int Price { get; set; }
 
 
         public Book(Flight flight, Passenger passenger,Seat SelectedClass) {
             Id = id++;
-            this.BookedFlight = flight;
+            BookedFlight = flight;
             Passenger = passenger;
             Class = SelectedClass;
+            Price = BookedFlight.ClassData[Class].SeatPrice;
         }
         public override string ToString()
         {

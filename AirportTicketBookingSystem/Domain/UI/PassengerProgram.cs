@@ -61,8 +61,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             PassengerService.AddPassenger(passenger);
             Console.WriteLine("\nPassenger Information Added successfully\n");
             Console.WriteLine(passenger);
-            Console.WriteLine("\nPress enter to back");
-            Console.ReadLine();
+            ShowPassengerMenu(passenger);
         }
         internal static void ShowPassengerMenu(Passenger passenger) {
             String? userInput = String.Empty;

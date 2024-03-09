@@ -61,6 +61,41 @@ namespace AirportTicketBookingSystem.Domain.Services
             }
             return true;
         }
+        internal static bool Match(Flight flight, KeyValuePair<String,object> criteria,Dictionary<String,object> criterias) {
+            if (criteria.Value is null) return true;
+            if (criteria.Key == "Class")
+            {
+                var seat = criteria.Value;
+                bool sucess = Enum.IsDefined(typeof(Seat), seat);
+                if (sucess)
+                {
+                    FlightSeatsData value = flight.ClassData[(Seat)seat];
+                    if (value.AvailableSeats == 0) return false;
+                    if (criterias.TryGetValue("Price", out object? priceValue))
+                    {
+                        if (priceValue is not null && priceValue.GetType() == typeof(int) && value.SeatPrice > (int)priceValue) return false;
+                    }
+                }
+            }
+            else if (criteria.Key == "Price")
+            {
+                var prices = flight.ClassData.Values;
+                if (criteria.Value.GetType() == typeof(int) && prices.All(classData => classData.SeatPrice > (int)criteria.Value)) return false;
+
+            }
+            else
+            {
+                var property = flight.GetType().GetProperty(criteria.Key);
+                if (property is null) return true;
+                if (property.PropertyType != criteria.Value?.GetType()) return true;
+                if (property.PropertyType == typeof(String))
+                {
+                    if (!String.Equals(criteria.Value as String, property.GetValue(flight) as String, StringComparison.OrdinalIgnoreCase)) return false;
+                }
+                else if (!Object.Equals(criteria.Value, property.GetValue(flight))) return false;
+            }
+            return true;
+        }
         internal static void AddFlight(Flight flight)
         {
             flights.Add(flight.Id, flight);

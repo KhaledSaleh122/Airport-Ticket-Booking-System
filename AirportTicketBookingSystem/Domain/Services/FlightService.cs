@@ -30,33 +30,15 @@ namespace AirportTicketBookingSystem.Domain.Services
                 if (criteria.Value is null) continue;
                 if (criteria.Key == "Class")
                 {
-                    var seat = criteria.Value;
-                    bool sucess = Enum.IsDefined(typeof(Seat), seat);
-                    if (sucess)
-                    {
-                        FlightSeatsData value = flight.ClassData[(Seat)seat];
-                        if (value.AvailableSeats == 0) return false;
-                        if (criterias.TryGetValue("Price", out object? priceValue))
-                        {
-                            if (priceValue is not null && priceValue.GetType() == typeof(int) && value.SeatPrice > (int)priceValue) return false;
-                        }
-                    }
+                    if (!MatchCriteriaClass(flight, criteria, criterias)) { return false; }
                 }
                 else if (criteria.Key == "Price")
                 {
-                    var prices = flight.ClassData.Values;
-                    if (criteria.Value.GetType() == typeof(int) && prices.All(classData => classData.SeatPrice > (int)criteria.Value)) return false;
+                    if (!MatchCriteriaPrice(flight, criteria, criterias)) { return false; }
 
                 }
                 else {
-                    var property = flight.GetType().GetProperty(criteria.Key);
-                    if (property is null) continue;
-                    if (property.PropertyType != criteria.Value?.GetType()) continue;
-                    if (property.PropertyType == typeof(String))
-                    {
-                        if (!String.Equals(criteria.Value as String, property.GetValue(flight) as String, StringComparison.OrdinalIgnoreCase)) return false;
-                    }
-                    else if (!Object.Equals(criteria.Value, property.GetValue(flight))) return false;
+                    if (!MatchCriteriaProperty(flight, criteria, criterias)) return false;
                 }
             }
             return true;
@@ -65,35 +47,46 @@ namespace AirportTicketBookingSystem.Domain.Services
             if (criteria.Value is null) return true;
             if (criteria.Key == "Class")
             {
-                var seat = criteria.Value;
-                bool sucess = Enum.IsDefined(typeof(Seat), seat);
-                if (sucess)
-                {
-                    FlightSeatsData value = flight.ClassData[(Seat)seat];
-                    if (value.AvailableSeats == 0) return false;
-                    if (criterias.TryGetValue("Price", out object? priceValue))
-                    {
-                        if (priceValue is not null && priceValue.GetType() == typeof(int) && value.SeatPrice > (int)priceValue) return false;
-                    }
-                }
+                if (!MatchCriteriaClass(flight,criteria,criterias)) { return false; }
             }
             else if (criteria.Key == "Price")
             {
-                var prices = flight.ClassData.Values;
-                if (criteria.Value.GetType() == typeof(int) && prices.All(classData => classData.SeatPrice > (int)criteria.Value)) return false;
-
+                if (!MatchCriteriaPrice(flight, criteria, criterias)) { return false; }
             }
             else
             {
-                var property = flight.GetType().GetProperty(criteria.Key);
-                if (property is null) return true;
-                if (property.PropertyType != criteria.Value?.GetType()) return true;
-                if (property.PropertyType == typeof(String))
-                {
-                    if (!String.Equals(criteria.Value as String, property.GetValue(flight) as String, StringComparison.OrdinalIgnoreCase)) return false;
-                }
-                else if (!Object.Equals(criteria.Value, property.GetValue(flight))) return false;
+                if (!MatchCriteriaProperty(flight, criteria, criterias)) return false;
             }
+            return true;
+        }
+        private static bool MatchCriteriaProperty(Flight flight, KeyValuePair<String, object> criteria, Dictionary<String, object> criterias) {
+            var property = flight.GetType().GetProperty(criteria.Key);
+            if (property is null) return true;
+            if (property.PropertyType != criteria.Value?.GetType()) return true;
+            if (property.PropertyType == typeof(String))
+            {
+                if (!String.Equals(criteria.Value as String, property.GetValue(flight) as String, StringComparison.OrdinalIgnoreCase)) return false;
+            }
+            else if (!Object.Equals(criteria.Value, property.GetValue(flight))) return false;
+            return true;
+        }
+        private static bool MatchCriteriaClass(Flight flight, KeyValuePair<String, object> criteria, Dictionary<String, object> criterias) {
+            var seat = criteria.Value;
+            bool sucess = Enum.IsDefined(typeof(Seat), seat);
+            if (sucess)
+            {
+                FlightSeatsData value = flight.ClassData[(Seat)seat];
+                if (value.AvailableSeats == 0) return false;
+                if (criterias.TryGetValue("Price", out object? priceValue))
+                {
+                    if (priceValue is not null && priceValue.GetType() == typeof(int) && value.SeatPrice > (int)priceValue) return false;
+                }
+            }
+            return true;
+        }
+        private static bool MatchCriteriaPrice(Flight flight, KeyValuePair<String, object> criteria, Dictionary<String, object> criterias) {
+            var prices = flight.ClassData.Values;
+            if (criteria.Value.GetType() == typeof(int) && prices.All(classData => classData.SeatPrice > (int)criteria.Value)) return false;
             return true;
         }
         internal static void AddFlight(Flight flight)

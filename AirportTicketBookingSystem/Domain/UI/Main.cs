@@ -29,7 +29,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                         PassengerMenu();
                         break;
                     case "2":
-                        //BookFlight(passenger);
+                        ShowManagerMenu();
                         break;
                     case "0":
                         return;
@@ -74,6 +74,42 @@ namespace AirportTicketBookingSystem.Domain.UI
                         break;
                 }
             } while (true);
+        }
+
+        internal static void ShowManagerMenu()
+        {
+            String? userInput = String.Empty;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("####################");
+                Console.WriteLine("## Manager Menu ##");
+                Console.WriteLine("####################");
+                Console.WriteLine();
+                Console.WriteLine("## Your Selection ##");
+                Console.WriteLine("Enter 1: Filter Bookings");
+                Console.WriteLine("Enter 2: Load Flights From CSV File");
+                Console.WriteLine("Enter 0: To Exist");
+                Console.WriteLine();
+                userInput = Console.ReadLine();
+                switch (userInput)
+                {
+                    case "1":
+                        ManagerProgram.FilterBookingsMenu();
+                        break;
+                    case "2":
+                        ManagerProgram.loadFlightFromCSV();
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine("invalid input");
+                        Console.WriteLine("\nPress enter to back");
+                        Console.ReadLine();
+                        break;
+                }
+            } while (true);
+
         }
 
     }

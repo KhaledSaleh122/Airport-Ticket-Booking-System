@@ -24,7 +24,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public String DepartureAirport { get; }
         public String ArrivalAirport { get; }
         public Dictionary<Seat, FlightSeatsData> ClassData { get; }
-        public Currency Currency { get; } = Currency.USD
+        public Currency Currency { get; } = Currency.USD;
 
 
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport)

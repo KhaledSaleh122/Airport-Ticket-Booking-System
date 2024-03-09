@@ -246,7 +246,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 {
                     case "1":
                         if (!flight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
-                        seat = Seat.Economy; 
+                        seat = Seat.Economy;
                         break;
                     case "2":
                         if (!flight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
@@ -332,15 +332,20 @@ namespace AirportTicketBookingSystem.Domain.UI
                         if (book.Class == Seat.Economy) { break; }
                         if (!book.BookedFlight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class"); continue; }
                         book.Class = Seat.Economy;
+                        book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
                         break;
                     case "2":
                         if (book.Class == Seat.Business) { break; }
                         if (!book.BookedFlight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
-                        book.Class = Seat.Business; break;
+                        book.Class = Seat.Business;
+                        book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
+                        break;
                     case "3":
                         if (book.Class == Seat.FirstClass) { break; }
                         if (!book.BookedFlight.isThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
-                        book.Class = Seat.FirstClass; break;
+                        book.Class = Seat.FirstClass;
+                        book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
+                        break;
                     case "4": return;
                     default: Console.WriteLine("invalid input"); continue;
                 }

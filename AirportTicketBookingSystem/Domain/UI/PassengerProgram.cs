@@ -245,14 +245,14 @@ namespace AirportTicketBookingSystem.Domain.UI
                 switch (selected)
                 {
                     case "1":
-                        if (!flight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
+                        if (!flight.IsThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class");continue; }
                         seat = Seat.Economy;
                         break;
                     case "2":
-                        if (!flight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!flight.IsThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
                         seat = Seat.Business; break;
                     case "3":
-                        if (!flight.isThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!flight.IsThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
                         seat = Seat.FirstClass; break;
                     case "4": return;
                     default: Console.WriteLine("invalid input"); continue;
@@ -330,19 +330,19 @@ namespace AirportTicketBookingSystem.Domain.UI
                 {
                     case "1":
                         if (book.Class == Seat.Economy) { break; }
-                        if (!book.BookedFlight.isThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!book.BookedFlight.IsThereAvailableSeat(Seat.Economy)) { Console.WriteLine("No available seat for this class"); continue; }
                         book.Class = Seat.Economy;
                         book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
                         break;
                     case "2":
                         if (book.Class == Seat.Business) { break; }
-                        if (!book.BookedFlight.isThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!book.BookedFlight.IsThereAvailableSeat(Seat.Business)) { Console.WriteLine("No available seat for this class"); continue; }
                         book.Class = Seat.Business;
                         book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
                         break;
                     case "3":
                         if (book.Class == Seat.FirstClass) { break; }
-                        if (!book.BookedFlight.isThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
+                        if (!book.BookedFlight.IsThereAvailableSeat(Seat.FirstClass)) { Console.WriteLine("No available seat for this class"); continue; }
                         book.Class = Seat.FirstClass;
                         book.Price = book.BookedFlight.ClassData[book.Class].SeatPrice;
                         break;

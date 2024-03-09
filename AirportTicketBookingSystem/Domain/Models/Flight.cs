@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Models
 {
-    internal  class FlightSeatsData(int availableSeats, int seatPrice, int maxSeats)
+    internal  class FlightSeatsData(int availableSeats, decimal seatPrice, int maxSeats)
     {
         public  int AvailableSeats { get => availableSeats; set{ if(value >= 0) availableSeats = value; } }
-        public  int SeatPrice { get => seatPrice;}
-        public  int MaxSeats { get => maxSeats; }
+        public  decimal SeatPrice { get => seatPrice;set{ if(value >= 0) seatPrice = value; } }
+        public  int MaxSeats { get => maxSeats; set { if (value > 0) maxSeats = value; } }
     };
     internal class Flight
     {
@@ -24,9 +24,7 @@ namespace AirportTicketBookingSystem.Domain.Models
         public String DepartureAirport { get; }
         public String ArrivalAirport { get; }
         public Dictionary<Seat, FlightSeatsData> ClassData { get; }
-        // public Dictionary<Seat, int> FlightPrice { get; }
         public Currency Currency { get; }
-        //public Dictionary<Seat, int> MaxSeats { get; } = [];
 
 
         internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport)
@@ -41,7 +39,9 @@ namespace AirportTicketBookingSystem.Domain.Models
             ClassData = new() { { Seat.Economy, new FlightSeatsData(50, 200, 50) }, { Seat.Business, new FlightSeatsData(20, 700, 20) }, { Seat.FirstClass, new FlightSeatsData(10, 2000, 10) } };
             Currency = Currency.USD;
         }
-        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, FlightSeatsData> classData, Currency currency)
+        
+        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Currency currency, Dictionary<Seat, FlightSeatsData> classData) :
+            this(departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport)
         {
             Id = id++;
             DepartureCountry = departureCountry;
@@ -53,22 +53,23 @@ namespace AirportTicketBookingSystem.Domain.Models
             Currency = currency;
             ClassData = classData;
         }
+        
         internal bool AddPassengerToFlight(Seat seat)
         {
-            if(!ClassData.TryGetValue(seat,out FlightSeatsData value)) return false;
-            if (isThereAvailableSeat(seat))
+            if(!ClassData.TryGetValue(seat,out FlightSeatsData? value)) return false;
+            if (IsThereAvailableSeat(seat))
             {
                 value.AvailableSeats -= 1;
                 return true;
             }
             return false;
         }
-        internal bool isThereAvailableSeat(Seat seat) { 
+        internal bool IsThereAvailableSeat(Seat seat) { 
             return ClassData[seat].AvailableSeats > 0;
         }
         internal bool RemovePassengerFromFlight(Seat seat)
         {
-            if (!ClassData.TryGetValue(seat, out FlightSeatsData value)) return false;
+            if (!ClassData.TryGetValue(seat, out FlightSeatsData? value)) return false;
             if (value.AvailableSeats == value.MaxSeats) { return false; }
             value.AvailableSeats += 1;
             return true;

@@ -16,7 +16,7 @@ namespace AirportTicketBookingSystem.Domain.UI
     internal static class PassengerProgram
     {
         internal static void UseCreatedPassengerAccount() {
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             Console.Clear();
             Console.WriteLine("## Signin Passenger Account ##");
             Passenger? passenger = null;
@@ -26,7 +26,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 userInput = Console.ReadLine();
                 if (userInput == "~") return;
                 bool success = int.TryParse(userInput, out int id);
-                if (!success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
+                if (!success) { Console.WriteLine("invalid input"); Console.ReadLine(); continue; }
                 passenger = PassengerService.GetPassenger(id);
                 if (passenger is null) { Console.WriteLine("Couldn't find the passenger account"); continue; }
             }while (passenger is null);
@@ -34,8 +34,8 @@ namespace AirportTicketBookingSystem.Domain.UI
         }
         internal static void AddPassenger()
         {
-            String userInput = String.Empty;
-            String name = String.Empty;
+            String? userInput = String.Empty;
+            String? name = String.Empty;
             Console.Clear();
             Console.WriteLine("##Create Passenger Account##");
             do
@@ -65,7 +65,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.ReadLine();
         }
         internal static void ShowPassengerMenu(Passenger passenger) {
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             do
             {
                 Console.Clear();
@@ -113,7 +113,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         }
         internal static void SearchForAvailableFlights()
         {
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             Dictionary<String, Object> props = new();
             do
             {
@@ -142,39 +142,39 @@ namespace AirportTicketBookingSystem.Domain.UI
                 {
                     case "1":
                         Console.WriteLine("Enter the Id: ");
-                        String _Id = Console.ReadLine();
+                        String? _Id = Console.ReadLine();
                         bool success = int.TryParse(_Id, out int id);
                         if (!success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
                         props["Id"] = id;
                         break;
                     case "2":
                         Console.WriteLine("Enter the Departure Country: ");
-                        String _departureCountry = Console.ReadLine();
+                        String? _departureCountry = Console.ReadLine();
                         if (String.IsNullOrWhiteSpace(_departureCountry)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back");Console.ReadLine(); break; }
                         props["DepartureCountry"] = _departureCountry;
                         break;                   
                     case "3":
                         Console.WriteLine("Enter the Destination Country: ");
-                        String _destinationCountry = Console.ReadLine();
+                        String?  _destinationCountry = Console.ReadLine();
                         if (String.IsNullOrWhiteSpace(_destinationCountry)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DestinationCountry"] = _destinationCountry;
                         break;                    
                     case "4":
                         Console.WriteLine("Enter the Departure Date: ");
-                        String _departureDate = Console.ReadLine();
+                        String? _departureDate = Console.ReadLine();
                         bool _success = DateTime.TryParse(_departureDate, out DateTime departureDate);
                         if (!_success) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DepartureDate"] = departureDate;
                         break;
                     case "5":
                         Console.WriteLine("Enter the Departure Airport: ");
-                        String _departureAirport = Console.ReadLine();
+                        String? _departureAirport = Console.ReadLine();
                         if (String.IsNullOrWhiteSpace(_departureAirport)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["DepartureAirport"] = _departureAirport;
                         break;                    
                     case "6":
                         Console.WriteLine("Enter the Arrival Airport: ");
-                        String _arrivalAirport = Console.ReadLine();
+                        String? _arrivalAirport = Console.ReadLine();
                         if (String.IsNullOrWhiteSpace(_arrivalAirport)) { Console.WriteLine("invalid input"); Console.WriteLine("\nPress enter to back"); Console.ReadLine(); break; }
                         props["ArrivalAirport"] = _arrivalAirport;
                         break;
@@ -183,7 +183,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                         Console.WriteLine("Enter 1: Economy seats");
                         Console.WriteLine("Enter 2: Business seats");
                         Console.WriteLine("Enter 3: FirstClass seats");
-                        String selected = Console.ReadLine();
+                        String? selected = Console.ReadLine();
                         switch (selected) {
                             case "1": props["Class"] = Seat.Economy;break;
                             case "2": props["Class"] = Seat.Business;break;
@@ -193,7 +193,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                         break;
                     case "8":
                         Console.WriteLine("Enter the price: ");
-                        String _price = Console.ReadLine();
+                        String? _price = Console.ReadLine();
                         bool __success = int.TryParse(_price, out int price);
                         if (!__success) { Console.WriteLine("invalid input"); Console.ReadLine(); break; }
                         props["Price"] = price;
@@ -208,7 +208,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             } while (userInput != "0");
             var flights = FlightService.Search(props);
             if (flights.Count == 0) {
-                Console.WriteLine("No data Yet!");
+                Console.WriteLine("No data match your criteria.");
             }
             foreach (var flight in flights)
             {
@@ -219,7 +219,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.ReadLine();
         }
         internal static void BookFlight(Passenger passenger) {
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             Console.WriteLine("### Book a Flight ###");
             Flight? flight = null;
             do {
@@ -241,7 +241,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 Console.WriteLine("Enter 2: Business seats");
                 Console.WriteLine("Enter 3: FirstClass seats");
                 Console.WriteLine("Enter 4: To cancel operation");
-                String selected = Console.ReadLine();
+                String? selected = Console.ReadLine();
                 switch (selected)
                 {
                     case "1":
@@ -260,7 +260,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 break;
             }while (true);
             Book book = new(flight, passenger,seat);
-            BookService.addBook(book);
+            BookService.AddBook(book);
             Console.WriteLine("\nYour flight reservation has been confirmed\n");
             Console.WriteLine(book);
             Console.WriteLine("\nPress enter to back");
@@ -269,7 +269,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void ViewPersonalBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Current Books###");
-            List<Book> books = BookService.getBooks(passenger);
+            List<Book> books = BookService.GetBooks(passenger);
             if (books.Count == 0) {
                 Console.WriteLine("\nNo Data yet!");
             }
@@ -283,7 +283,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void CancelBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Cancel Book###");
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             Book? book = null;
             do {
                 Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");
@@ -291,11 +291,11 @@ namespace AirportTicketBookingSystem.Domain.UI
                 if (userInput == "~") return;
                 bool sucess = int.TryParse(userInput, out int id);
                 if (!sucess) { Console.WriteLine("invalid input"); continue; }
-                book = BookService.getBook(passenger, id);
+                book = BookService.GetBook(passenger, id);
                 if (book == null) { Console.WriteLine("Couldn't find the Book");continue; }
                 break;
             }while (true);
-            BookService.removeBook(book);
+            BookService.RemoveBook(book);
             Console.WriteLine("\nYour flight reservation has been Canceled\n");
             Console.WriteLine(book);
             Console.WriteLine("\nPress enter to back");
@@ -305,7 +305,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         internal static void ModifyBooking(Passenger passenger) {
             Console.Clear();
             Console.WriteLine("###Modify Book###");
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             Book? book = null;
             do
             {
@@ -314,7 +314,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 if (userInput == "~") return;
                 bool sucess = int.TryParse(userInput, out int id);
                 if (!sucess) { Console.WriteLine("invalid input"); continue; }
-                book = BookService.getBook(passenger, id);
+                book = BookService.GetBook(passenger, id);
                 if (book == null) { Console.WriteLine("Couldn't find the Book"); continue; }
                 break;
             } while (true);
@@ -325,7 +325,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 Console.WriteLine("Enter 2: Business seats");
                 Console.WriteLine("Enter 3: FirstClass seats");
                 Console.WriteLine("Enter 4: To cancel operation");
-                String selected = Console.ReadLine();
+                String? selected = Console.ReadLine();
                 switch (selected)
                 {
                     case "1":

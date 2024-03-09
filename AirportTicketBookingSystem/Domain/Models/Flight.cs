@@ -10,7 +10,7 @@ namespace AirportTicketBookingSystem.Domain.Models
 {
     internal  class FlightSeatsData(int availableSeats, int seatPrice, int maxSeats)
     {
-        public  int AvailableSeats { get => availableSeats; set{ availableSeats = value; } }
+        public  int AvailableSeats { get => availableSeats; set{ if(value >= 0) availableSeats = value; } }
         public  int SeatPrice { get => seatPrice;}
         public  int MaxSeats { get => maxSeats; }
     };
@@ -41,7 +41,7 @@ namespace AirportTicketBookingSystem.Domain.Models
             ClassData = new() { { Seat.Economy, new FlightSeatsData(50, 200, 50) }, { Seat.Business, new FlightSeatsData(20, 700, 20) }, { Seat.FirstClass, new FlightSeatsData(10, 2000, 10) } };
             Currency = Currency.USD;
         }
-        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, FlightSeatsData> ClassData, Currency currency)
+        internal Flight(String departureCountry, String destinationCountry, DateTime departureDate, String departureAirport, String arrivalAirport, Dictionary<Seat, FlightSeatsData> classData, Currency currency)
         {
             Id = id++;
             DepartureCountry = departureCountry;
@@ -51,6 +51,7 @@ namespace AirportTicketBookingSystem.Domain.Models
             DepartureAirport = departureAirport;
             ArrivalAirport = arrivalAirport;
             Currency = currency;
+            ClassData = classData;
         }
         internal bool AddPassengerToFlight(Seat seat)
         {

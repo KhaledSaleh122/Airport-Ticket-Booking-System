@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace AirportTicketBookingSystem.Domain.Services
 {
@@ -29,6 +30,9 @@ namespace AirportTicketBookingSystem.Domain.Services
         internal static Book? GetBook(Passenger passenger,int id)
         {
             return books.FirstOrDefault(book => book.Value.Passenger == passenger && book.Key == id).Value;
+        }
+        internal static bool PassengerAlreadyBookedThis(Passenger passenger,Flight flight) {
+            return books.Count(book => book.Value.Passenger == passenger && book.Value.BookedFlight == flight) > 0 ?true:false;
         }
         internal static List<Book> Filter(Dictionary<String, Object>? criterias) {
             return books.Select((book) => book.Value).Where((value) => FilterMatch(value, criterias)).ToList();

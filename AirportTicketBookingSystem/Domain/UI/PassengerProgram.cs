@@ -230,7 +230,12 @@ namespace AirportTicketBookingSystem.Domain.UI
                 List <Flight> targetFlight= FlightService.Search(new Dictionary<string, object> { { "Id", id } });
                 if (targetFlight.Count == 0) { Console.WriteLine("Selected Flgiht Not available");continue; }
                 flight = targetFlight[0];
-            } while (flight is null);
+                if (BookService.PassengerAlreadyBookedThis(passenger, flight)) {
+                    Console.WriteLine("You already booked this");
+                    continue;
+                }
+                break;
+            } while (true);
             Console.WriteLine();
             Console.WriteLine(flight);
             Seat seat;

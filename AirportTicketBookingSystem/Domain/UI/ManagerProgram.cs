@@ -150,7 +150,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 Console.WriteLine("\n\nAll flights from csv loaded successfully!");
             }
             else {
-                Console.WriteLine($"\n\nThere is {errors.Count} during loading csv, Fix them and load it again!");
+                Console.WriteLine($"\n\nThere is {errors.Count} errors during loading csv, Fix them and load it again!");
             }
 
             Console.WriteLine("\nPress enter to go back");

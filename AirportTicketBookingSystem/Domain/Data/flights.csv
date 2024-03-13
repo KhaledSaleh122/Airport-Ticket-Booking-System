@@ -1,5 +1,5 @@
 DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,ArrivalAirport,Currency,MaxSeatsClassEconomy,PricePerSeatClassEconomy,MaxSeatsClassBusiness,PricePerSeatClassBusiness,MaxSeatsFirstClass,PricePerSeatFirstClass
-USA,UK,2024/03/10,JFK,LHR,USD,150,500,50,1500,20,3000
+USA,UK,2024-03-16,JFK,LHR,USD,150,500,50,1500,-20,-3000
 Germany,France,2024-03-15,TXL,CDG,EUR,100,400,30,1200,15,2500
 China,Japan,2024-03-20,PEK,HND,EUR,200,600,20,1800,10,3500
 Australia,New Zealand,2024-03-25,SYD,AKL,EUR,120,450,25,1400,18,2800

@@ -78,54 +78,49 @@ namespace AirportTicketBookingSystem.Domain.Models
             }
             return erros;
         }
+
         private static bool Validate(String value, CSVFlightFields cff) {
-            try {
-                if (cff.Required && String.IsNullOrWhiteSpace(value)) { return false; }
-                else if (!cff.Required && String.IsNullOrWhiteSpace(value)) { return true; }
-                if (cff.Name == "DepartureDate")
-                {
-                    DateTime date = DateTime.Parse(value);
-                    if (date < DateTime.Now)
-                    {
-                        return false;
-                    }
-                    cff.currValue = date;
-                }
-                else if (cff.Name == "MaxSeatsClassEconomy" || cff.Name == "MaxSeatsClassBusiness" || cff.Name == "MaxSeatsFirstClass")
-                {
-                    bool success = int.TryParse(value, out int maxSeats);
-                    if (maxSeats! <= 0)
-                    {
-                        return false;
-                    }
-                    cff.currValue = maxSeats;
-                }
-                else if (cff.Name == "PricePerSeatClassEconomy" || cff.Name == "PricePerSeatClassBusiness" || cff.Name == "PricePerSeatFirstClass")
-                {
-                    bool success = decimal.TryParse(value, out decimal price);
-                    if (price! < 0)
-                    {
-                        return false;
-                    }
-                    cff.currValue = price;
-                }
-                else if (cff.Name == "Currency")
-                {
-                    bool sucess = Enum.TryParse(typeof(Currency), value, out object? reuslt);
-                    if (!sucess || reuslt is null)
-                    {
-                        return false;
-                    }
-                    cff.currValue = reuslt;
-                }
-                else {
-                    cff.currValue = Convert.ChangeType(value,cff.Type);
-                }
-                return true;
+            if (cff.Required && String.IsNullOrWhiteSpace(value)) { return false; }
+            else if (!cff.Required && String.IsNullOrWhiteSpace(value)) { return true; }
+            if (cff.Type == typeof(int))
+            {
+                bool success = int.TryParse(value, out var val);
+                if (!success) { return false; }
+                if (cff.Name.StartsWith("MaxSeats") && val <= 0) return false;
+                cff.currValue = val;
             }
-            catch{
-                return false;
+            else if (cff.Type == typeof(decimal))
+            {
+                bool success = decimal.TryParse(value, out decimal val);
+                if (!success) return false;
+                if (cff.Name.StartsWith("PricePerSeat") && val < 0)
+                {
+                    return false;
+                }
+                cff.currValue = val;
             }
+            else if (cff.Type == typeof(DateTime))
+            {
+                bool success = DateTime.TryParse(value, out DateTime val);
+                if (!success) { return false; }
+                if (cff.Name == "DepartureDate" && val < DateTime.Now) return false;
+                cff.currValue = val;
+            }
+            else if (cff.Type == typeof(Currency))
+            {
+                bool sucess = Enum.TryParse(value, out Currency result);
+                if (!sucess) return false;
+                cff.currValue = result;
+            }
+            else if (cff.Type == typeof(string))
+            {
+                cff.currValue = value;
+            }
+            else
+            { 
+                return false ;
+            }
+            return true;
         }
     }
 }

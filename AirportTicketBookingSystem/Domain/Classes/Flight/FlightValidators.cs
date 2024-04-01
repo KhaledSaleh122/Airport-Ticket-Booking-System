@@ -1,5 +1,4 @@
-﻿using AirportTicketBookingSystem.Domain.Classes.Flight;
-using AirportTicketBookingSystem.Domain.Enums;
+﻿using AirportTicketBookingSystem.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

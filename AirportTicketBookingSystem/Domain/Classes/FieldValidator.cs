@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace AirportTicketBookingSystem.Domain.Classes.Flight
+namespace AirportTicketBookingSystem.Domain.Classes
 {
     internal class FieldValidatorModel
     {

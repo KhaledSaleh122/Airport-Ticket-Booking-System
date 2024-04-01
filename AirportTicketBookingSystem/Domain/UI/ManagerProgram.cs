@@ -1,6 +1,8 @@
-﻿using AirportTicketBookingSystem.Domain.Enums;
+﻿using AirportTicketBookingSystem.Domain.Classes;
+using AirportTicketBookingSystem.Domain.Classes.Booking;
+using AirportTicketBookingSystem.Domain.Enums;
+using AirportTicketBookingSystem.Domain.Interfaces;
 using AirportTicketBookingSystem.Domain.Models;
-using AirportTicketBookingSystem.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,10 @@ namespace AirportTicketBookingSystem.Domain.UI
 {
     internal static class ManagerProgram
     {
-        internal static void FilterBookingsMenu() {
+        internal static void FilterBookingsMenu()
+        {
             String? userInput = String.Empty;
-            Dictionary<String, Object> props = new();
+            Dictionary<String, Object?> props = [];
             do
             {
                 Console.Clear();
@@ -101,9 +104,9 @@ namespace AirportTicketBookingSystem.Domain.UI
                         String? selected = Console.ReadLine();
                         switch (selected)
                         {
-                            case "1": props["Class"] = Seat.Economy; break;
-                            case "2": props["Class"] = Seat.Business; break;
-                            case "3": props["Class"] = Seat.FirstClass; break;
+                            case "1": props["Class"] = SeatClasses.Economy; break;
+                            case "2": props["Class"] = SeatClasses.Business; break;
+                            case "3": props["Class"] = SeatClasses.FirstClass; break;
                             default: Console.WriteLine("invalid input"); Console.ReadLine(); break;
                         }
                         break;
@@ -122,7 +125,22 @@ namespace AirportTicketBookingSystem.Domain.UI
 
                 }
             } while (userInput != "0");
-            var flights = BookService.Filter(props);
+            var flightSearchModel = new SearchFlightModel(
+                    (int?)props.GetValueOrDefault("FlightId"),
+                    (String?)props.GetValueOrDefault("DepartureCountry"),
+                    (String?)props.GetValueOrDefault("DestinationCountry"),
+                    (DateTime?)props.GetValueOrDefault("DepartureDate"),
+                    (String?)props.GetValueOrDefault("DepartureAirport"),
+                    (String?)props.GetValueOrDefault("ArrivalAirport")
+            );
+            var searchBookingModel = new SearchBookingModel(
+                (int?)props.GetValueOrDefault("Id"),
+                flightSearchModel,
+                (int?)props.GetValueOrDefault("PassengerId"),
+                (props.GetValueOrDefault("Class") is null ? default : (SeatClasses)props.GetValueOrDefault("Class")!),
+                (decimal?)props.GetValueOrDefault("Price")
+            );
+            var flights = BookService.FindMatchesBooks(searchBookingModel);
             if (flights.Count == 0)
             {
                 Console.WriteLine("No data match your criteria.");
@@ -136,11 +154,13 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.WriteLine("\nPress enter to back");
             Console.ReadLine();
         }
-        internal static void loadFlightFromCSV() {
+        internal static void LoadFlightFromCSV()
+        {
             Console.Clear();
             Console.WriteLine("### Loading Flights From CSV File ###");
             Console.WriteLine();
-            var errors = Manager.LoadFlightsDataFromCSV();
+            IFlightDataSource flightDataSource = new CsvFlightDataSource(@"C:\Users\khale\source\repos\AirportTicketBookingSystem\AirportTicketBookingSystem\Domain\Data\flights.csv");
+            var errors = flightDataSource.LoadFlightsFromSource();
             foreach (var error in errors)
             {
                 Console.WriteLine(error);
@@ -149,7 +169,8 @@ namespace AirportTicketBookingSystem.Domain.UI
             {
                 Console.WriteLine("\n\nAll flights from csv loaded successfully!");
             }
-            else {
+            else
+            {
                 Console.WriteLine($"\n\nThere is {errors.Count} errors during loading csv, Fix them and load it again!");
             }
 

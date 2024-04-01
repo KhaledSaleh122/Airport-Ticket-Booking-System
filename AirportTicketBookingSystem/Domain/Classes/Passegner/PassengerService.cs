@@ -1,4 +1,4 @@
-﻿using AirportTicketBookingSystem.Domain.Models;
+﻿using AirportTicketBookingSystem.Domain.Classes.Passegner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,7 @@ namespace AirportTicketBookingSystem.Domain.Services
 {
     internal static class PassengerService
     {
-        private readonly static Dictionary<int, Passenger> passengers = new();
-        internal static Dictionary<int, Passenger> GetPassengers()
-        {
-            return passengers.ToDictionary();
-        }
+        private readonly static Dictionary<int, Passenger> passengers = [];
         internal static void AddPassenger(Passenger passenger)
         {
             passengers.Add(passenger.Id, passenger);

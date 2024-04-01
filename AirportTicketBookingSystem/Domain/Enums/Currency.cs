@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Enums
 {
-    internal enum Currency
+    public enum Currency
     {
         USD,
         EUR,

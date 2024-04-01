@@ -11,4 +11,10 @@
     <Folder Include="Domain\Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Domain\Data\flights.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -9,9 +9,11 @@ namespace AirportTicketBookingSystem.Domain.UI
 {
     internal static class Main
     {
-        public static void ShowMainMenu() {
-            String userInput = String.Empty;
-            do {
+        public static void ShowMainMenu()
+        {
+            String? userInput = String.Empty;
+            do
+            {
                 Console.Clear();
                 Console.WriteLine("####################");
                 Console.WriteLine("## Main Menu ##");
@@ -39,11 +41,11 @@ namespace AirportTicketBookingSystem.Domain.UI
                         Console.ReadLine();
                         break;
                 }
-            }while (true);
+            } while (true);
         }
         static void PassengerMenu()
         {
-            String userInput = String.Empty;
+            String? userInput = String.Empty;
             do
             {
                 Console.Clear();
@@ -98,7 +100,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                         ManagerProgram.FilterBookingsMenu();
                         break;
                     case "2":
-                        ManagerProgram.loadFlightFromCSV();
+                        ManagerProgram.LoadFlightFromCSV();
                         break;
                     case "0":
                         return;

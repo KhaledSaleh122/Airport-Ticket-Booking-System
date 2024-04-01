@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Enums
 {
-    internal enum Seat
+    public enum SeatClasses
     {
+        UnSelectedClass,
         Economy,
         Business,
-        FirstClass
+        FirstClass,
     }
 }

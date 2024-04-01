@@ -1,7 +1,8 @@
 DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,ArrivalAirport,Currency,MaxSeatsClassEconomy,PricePerSeatClassEconomy,MaxSeatsClassBusiness,PricePerSeatClassBusiness,MaxSeatsFirstClass,PricePerSeatFirstClass
-USA,UK,2024-03-16,JFK,LHR,USD,150,500,50,1500,-20,-3000
-Germany,France,2024-03-15,TXL,CDG,EUR,100,400,30,1200,15,2500
-China,Japan,2024-03-20,PEK,HND,EUR,200,600,20,1800,10,3500
-Australia,New Zealand,2024-03-25,SYD,AKL,EUR,120,450,25,1400,18,2800
-Brazil,Argentina,2024-03-30,GRU,EZE,EUR,50,300,15,900,25,2000
+Germany,France,2024-04-15,TXL,CDG,EUR,100,400,30,1200,15,2500
+China,Japan,2024-04-20,PEK,HND,EUR,200,600,20,1800,10,3500
+Australia,New Zealand,2024-04-25,SYD,AKL,EUR,120,450,25,1400,18,2800
+Brazil,Argentina,2024-04-30,GRU,EZE,EUR,50,300,15,900,25,5000
 India,South Africa,2024-04-05,BOM,JNB,EUR,80,200,10,800,5
+Brazil,New Zealand,2024-04-10,GRU,USD,50,300,15,900,25,2000
+Brazil,South Africa,2024-04-30,GRU,EZE,EUR,50,300,15,900,25,1000

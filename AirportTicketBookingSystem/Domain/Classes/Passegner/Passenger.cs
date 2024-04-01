@@ -5,24 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem.Domain.Models
+namespace AirportTicketBookingSystem.Domain.Classes.Passegner
 {
     internal class Passenger
     {
         private static int id = 1;
-        private String name = String.Empty;
+        private string name = string.Empty;
         internal int Id { get; }
         public string Name
         {
             get => name;
-            set
-            {
-                if (String.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-                name = value;
-            }
+            set => name = value;
         }
         public Passenger(string name)
         {

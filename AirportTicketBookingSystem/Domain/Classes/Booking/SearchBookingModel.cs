@@ -27,6 +27,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Booking
             if (FlightModel is not null && !FlightModel.Match(book.BookedFlight)) return false;
             if (PassengerId is not null && PassengerId != book.Passenger.Id) return false;
             if (Price is not null && Price < book.Price) return false;
+            if (Class != default && Class != book.Class) return false;
             return true;
         }
 

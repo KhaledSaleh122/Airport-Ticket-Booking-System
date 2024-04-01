@@ -1,6 +1,5 @@
-﻿using AirportTicketBookingSystem.Domain.Classes.Booking;
-using AirportTicketBookingSystem.Domain.Classes.Flight;
-using AirportTicketBookingSystem.Domain.Models;
+﻿using AirportTicketBookingSystem.Domain.Classes.Flight;
+using AirportTicketBookingSystem.Domain.Classes.Passegner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Reflection.Metadata.BlobBuilder;
 
-namespace AirportTicketBookingSystem.Domain.Services
+namespace AirportTicketBookingSystem.Domain.Classes.Booking
 {
     internal static class BookService
     {
@@ -36,7 +35,7 @@ namespace AirportTicketBookingSystem.Domain.Services
         {
             return _books.FirstOrDefault(book => book.Value.Passenger == passenger && book.Key == id).Value;
         }
-        internal static bool PassengerAlreadyBookedThis(Passenger passenger, Flight flight)
+        internal static bool PassengerAlreadyBookedThis(Passenger passenger, AbstractFlight flight)
         {
             return _books.Count(book => book.Value.Passenger == passenger && book.Value.BookedFlight == flight) > 0 ? true : false;
         }

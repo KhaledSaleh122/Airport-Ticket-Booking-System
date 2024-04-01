@@ -1,5 +1,6 @@
 ﻿using AirportTicketBookingSystem.Domain.Classes;
 using AirportTicketBookingSystem.Domain.Classes.Booking;
+using AirportTicketBookingSystem.Domain.Classes.Flight;
 using AirportTicketBookingSystem.Domain.Enums;
 using AirportTicketBookingSystem.Domain.Interfaces;
 using AirportTicketBookingSystem.Domain.Models;

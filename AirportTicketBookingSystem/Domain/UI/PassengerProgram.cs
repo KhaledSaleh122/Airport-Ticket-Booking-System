@@ -1,8 +1,8 @@
 ﻿using AirportTicketBookingSystem.Domain.Classes.Booking;
 using AirportTicketBookingSystem.Domain.Classes.Flight;
+using AirportTicketBookingSystem.Domain.Classes.Passegner;
 using AirportTicketBookingSystem.Domain.Enums;
 using AirportTicketBookingSystem.Domain.Models;
-using AirportTicketBookingSystem.Domain.Services;
 
 
 namespace AirportTicketBookingSystem.Domain.UI
@@ -230,7 +230,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         {
             String? userInput = String.Empty;
             Console.WriteLine("### Book a Flight ###");
-            Flight? flight = null;
+            AbstractFlight? flight = null;
             do
             {
                 Console.WriteLine("\nEnter Id of the flight you want to book: [Enter ~ to cancel operation]");
@@ -238,7 +238,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 if (userInput == "~") return;
                 bool sucess = int.TryParse(userInput, out int id);
                 if (!sucess) { Console.WriteLine("invalid input"); continue; }
-                List<Flight> targetFlight = FlightRepository.FindAvailableFlights(new SearchFlightModel(id));
+                List<AbstractFlight> targetFlight = FlightRepository.FindAvailableFlights(new SearchFlightModel(id));
                 if (targetFlight.Count == 0) { Console.WriteLine("Selected Flgiht Not available"); continue; }
                 flight = targetFlight[0];
                 if (BookService.PassengerAlreadyBookedThis(passenger, flight))

@@ -1,7 +1,7 @@
 ﻿using AirportTicketBookingSystem.Domain.Classes;
 using AirportTicketBookingSystem.Domain.Classes.Flight;
+using AirportTicketBookingSystem.Domain.Classes.Passegner;
 using AirportTicketBookingSystem.Domain.Enums;
-using AirportTicketBookingSystem.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +15,13 @@ namespace AirportTicketBookingSystem.Domain.Classes.Booking
         private static int id = 1;
 
         public int Id { get; }
-        public Flight BookedFlight { get; }
+        public AbstractFlight BookedFlight { get; }
         public Passenger Passenger { get; }
         public SeatClasses Class { get; set; }
         public decimal Price { get; set; }
 
 
-        public Book(Flight flight, Passenger passenger, SeatClasses SelectedClass)
+        public Book(AbstractFlight flight, Passenger passenger, SeatClasses SelectedClass)
         {
             Id = id++;
             BookedFlight = flight;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Flight
 {
-    internal class StandardFlight : Flight
+    internal class StandardFlight : AbstractFlight
     {
         public StandardFlight(string departureCountry, string destinationCountry, DateTime departureDate, string departureAirport, string arrivalAirport) : base(departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport)
         {

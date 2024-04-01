@@ -1,6 +1,6 @@
-﻿using AirportTicketBookingSystem.Domain.Enums;
+﻿using AirportTicketBookingSystem.Domain.Classes.Seat;
+using AirportTicketBookingSystem.Domain.Enums;
 using AirportTicketBookingSystem.Domain.Interfaces;
-using AirportTicketBookingSystem.Domain.Services;
 using Microsoft.VisualBasic.FileIO;
 namespace AirportTicketBookingSystem.Domain.Classes.Flight
 {
@@ -8,7 +8,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
     {
         private readonly List<string> _errors = [];
         private readonly string _filePath;
-        private readonly List<Flight> _flights = [];
+        private readonly List<AbstractFlight> _flights = [];
         private int _line = 1;
         public CsvFlightDataSource(string filePath)
         {
@@ -56,7 +56,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
             object BusinessPricePerSeat = FlightValidators.Validators[9].CurrValue ?? 750;
             object FirstClassMaxSeats = FlightValidators.Validators[10].CurrValue ?? 10;
             object FirstClassPricePerSeat = FlightValidators.Validators[11].CurrValue ?? 1500;
-            Flight flight = new StandardFlight(
+            AbstractFlight flight = new StandardFlight(
                 (string)FlightValidators.Validators[0].CurrValue!,
                 (string)FlightValidators.Validators[1].CurrValue!,
                 (DateTime)FlightValidators.Validators[2].CurrValue!,

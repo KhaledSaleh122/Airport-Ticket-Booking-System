@@ -21,18 +21,18 @@ namespace AirportTicketBookingSystem.Domain.Models
         )
     {
 
-        public bool Match(Flight flight)
+        public bool Match(AbstractFlight flight)
         {
             if (DepartureDate is not null && DepartureDate != flight.DepartureDate) return false;
             return Matches(flight);
         }
 
-        public bool MatchAvaliableFlight(Flight flight)
+        public bool MatchAvaliableFlight(AbstractFlight flight)
         {
             if (!Match(flight)) return false;
             return flight.DepartureDate >= DateTime.Now;
         }
-        private bool Matches(Flight flight)
+        private bool Matches(AbstractFlight flight)
         {
             if (Id is not null && Id != flight.Id) return false;
             if (!String.IsNullOrWhiteSpace(DepartureCountry) && DepartureCountry != flight.DepartureCountry) return false;

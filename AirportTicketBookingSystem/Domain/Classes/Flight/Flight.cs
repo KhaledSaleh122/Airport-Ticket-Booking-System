@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Flight
 {
-    public abstract class Flight
+    public abstract class AbstractFlight
     {
         private static int id = 1;
         public int Id { get; }
@@ -30,7 +30,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
         public Currency Currency { get; set; } = Currency.USD;
 
 
-        public Flight(
+        public AbstractFlight(
                     string departureCountry,
                     string destinationCountry,
                     DateTime departureDate,

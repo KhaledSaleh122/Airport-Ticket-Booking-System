@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Passegner
 {
-    internal class Passenger
+    public class Passenger
     {
         private static int id = 1;
         private string name = string.Empty;
-        internal int Id { get; }
+        public int Id { get; }
         public string Name
         {
             get => name;

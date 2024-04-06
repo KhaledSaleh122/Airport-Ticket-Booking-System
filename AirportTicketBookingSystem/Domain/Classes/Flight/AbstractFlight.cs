@@ -30,7 +30,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
         public Currency Currency { get; set; } = Currency.USD;
 
 
-        public AbstractFlight(
+        protected AbstractFlight(
                     string departureCountry,
                     string destinationCountry,
                     DateTime departureDate,
@@ -45,9 +45,9 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
             ArrivalAirport = arrivalAirport;
         }
 
-        internal abstract void AddPassengerToFlight(SeatClasses seat);
-        internal abstract bool IsThereAvailableSeat(SeatClasses seat);
-        internal abstract void RemovePassengerFromFlight(SeatClasses seat);
+        public abstract void AddPassengerToFlight(SeatClasses seat);
+        public abstract bool IsThereAvailableSeat(SeatClasses seat);
+        public abstract void RemovePassengerFromFlight(SeatClasses seat);
 
         public override string ToString()
         {

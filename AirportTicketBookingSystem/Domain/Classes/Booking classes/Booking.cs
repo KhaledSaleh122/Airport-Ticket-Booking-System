@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Booking
 {
-    internal class Book
+    public class Booking
     {
         private static int id = 1;
 
@@ -21,7 +21,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Booking
         public decimal Price { get; set; }
 
 
-        public Book(AbstractFlight flight, Passenger passenger, SeatClasses SelectedClass)
+        public Booking(AbstractFlight flight, Passenger passenger, SeatClasses SelectedClass)
         {
             Id = id++;
             BookedFlight = flight;

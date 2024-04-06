@@ -276,7 +276,7 @@ namespace AirportTicketBookingSystem.Domain.UI
                 }
                 break;
             } while (true);
-            Book book = new(flight, passenger, seat);
+            Booking book = new(flight, passenger, seat);
             BookService.AddBook(book);
             Console.WriteLine("\nYour flight reservation has been confirmed\n");
             Console.WriteLine(book);
@@ -287,7 +287,7 @@ namespace AirportTicketBookingSystem.Domain.UI
         {
             Console.Clear();
             Console.WriteLine("###Current Books###");
-            List<Book> books = BookService.GetBooks(passenger);
+            List<Booking> books = BookService.GetBooks(passenger);
             if (books.Count == 0)
             {
                 Console.WriteLine("\nNo Data yet!");
@@ -305,7 +305,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.Clear();
             Console.WriteLine("###Cancel Book###");
             String? userInput = String.Empty;
-            Book? book = null;
+            Booking? book = null;
             do
             {
                 Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");
@@ -329,7 +329,7 @@ namespace AirportTicketBookingSystem.Domain.UI
             Console.Clear();
             Console.WriteLine("###Modify Book###");
             String? userInput = String.Empty;
-            Book? book = null;
+            Booking? book = null;
             do
             {
                 Console.WriteLine("\nEnter Id of the book you want to cancel: [Enter ~ to cancel operation]");

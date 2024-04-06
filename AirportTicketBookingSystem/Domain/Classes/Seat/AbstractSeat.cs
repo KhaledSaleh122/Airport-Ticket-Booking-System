@@ -9,7 +9,7 @@ namespace AirportTicketBookingSystem.Domain.Classes.Seat
 {
     public abstract class AbstractSeat
     {
-        public AbstractSeat(decimal seatPrice, int maxSeats)
+        protected AbstractSeat(decimal seatPrice, int maxSeats)
         {
             AvailableSeats = maxSeats;
             SeatPrice = seatPrice;

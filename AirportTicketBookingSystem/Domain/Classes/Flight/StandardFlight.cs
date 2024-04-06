@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Flight
 {
-    internal class StandardFlight : AbstractFlight
+    public class StandardFlight : AbstractFlight
     {
         public StandardFlight(string departureCountry, string destinationCountry, DateTime departureDate, string departureAirport, string arrivalAirport) : base(departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport)
         {
         }
 
-        internal override void AddPassengerToFlight(SeatClasses seat)
+        public override void AddPassengerToFlight(SeatClasses seat)
         {
             if (IsThereAvailableSeat(seat))
             {
@@ -22,12 +22,12 @@ namespace AirportTicketBookingSystem.Domain.Classes.Flight
             }
         }
 
-        internal override bool IsThereAvailableSeat(SeatClasses seat)
+        public override bool IsThereAvailableSeat(SeatClasses seat)
         {
             return seats[seat].AvailableSeats > 0;
         }
 
-        internal override void RemovePassengerFromFlight(SeatClasses seat)
+        public override void RemovePassengerFromFlight(SeatClasses seat)
         {
             if (seats[seat].AvailableSeats < seats[seat].MaxSeats)
             {

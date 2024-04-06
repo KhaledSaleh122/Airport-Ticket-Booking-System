@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Domain.Classes.Seat
 {
-    internal class FirstClassSeat : AbstractSeat
+    public class FirstClassSeat : AbstractSeat
     {
         public FirstClassSeat(decimal seatPrice = 1500, int maxSeats = 10) : base(seatPrice, maxSeats)
         {
